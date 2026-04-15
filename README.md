@@ -8,6 +8,11 @@
     -  Instalasi Go
     -  Setup Project Go
 - Go Crash Course
+    -  Variabel & Tipe Data
+    -  Array & Slices
+    -  Fungsi
+    -  Struct
+    -  Error Handling
 - [Phase 3 — Membedah Boilerplate](#phase-3--membedah-boilerplate-0045---0100)
 - [Phase 4 — Hands-on Implementation](#phase-4--hands-on-implementation-0100---0130)
 - [Phase 5 — Backend 101: Fundamental Concepts](#phase-5--backend-101-fundamental-concepts-0130---0200)
@@ -142,7 +147,7 @@ func bagi(a, b float64) (float64, error) {
 }
 ```
 
-### Struct — "Class"-nya Go
+### Struct
 
 Go bukan bahasa yang mendukung object oriented programming. Sebagai gantinya, gunakan `struct` untuk mengelompokkan data.
 
@@ -164,7 +169,7 @@ user := User{
 fmt.Println(user.Name) // Output: Budi
 ```
 
-### Error Handling Khas Go
+### Error Handling
 
 Go tidak menggunakan `try-catch`. Error dikembalikan sebagai nilai return biasa.  
 
