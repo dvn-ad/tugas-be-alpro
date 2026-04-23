@@ -1,0 +1,195 @@
+basePath: /api
+definitions:
+  dto.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dto.TokenResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  dto.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      role:
+        type: string
+    type: object
+  utils.SwaggerErrorResponse:
+    properties:
+      message:
+        example: Error message
+        type: string
+      status:
+        example: error
+        type: string
+    type: object
+  utils.SwaggerSuccessResponse:
+    properties:
+      data: {}
+      message:
+        example: Operation successful
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Materi BE Alpro API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with email and password
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login Successful
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.SwaggerSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.TokenResponse'
+              type: object
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: '#/definitions/utils.SwaggerErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.SwaggerErrorResponse'
+      summary: User Login
+      tags:
+      - Auth
+  /users:
+    get:
+      description: Get a list of all registered users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.SwaggerSuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.UserResponse'
+                  type: array
+              type: object
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/utils.SwaggerErrorResponse'
+      summary: Get All Users
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Register a new user in the system
+      parameters:
+      - description: User Registration Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.SwaggerSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserResponse'
+              type: object
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: '#/definitions/utils.SwaggerErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.SwaggerErrorResponse'
+      summary: Create User
+      tags:
+      - Users
+  /users/{id}:
+    get:
+      description: Get details of a single user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User Found
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.SwaggerSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserResponse'
+              type: object
+        "404":
+          description: User Not Found
+          schema:
+            $ref: '#/definitions/utils.SwaggerErrorResponse'
+      summary: Get User By ID
+      tags:
+      - Users
+swagger: "2.0"

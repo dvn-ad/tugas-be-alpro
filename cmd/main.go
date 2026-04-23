@@ -1,21 +1,30 @@
 package main
 
 import (
-    "log"
-    "github.com/gin-gonic/gin"
-    "github.com/joho/godotenv"
-    "github.com/Mobilizes/materi-be-alpro/config"
-    "github.com/Mobilizes/materi-be-alpro/database/entities"
-    "github.com/Mobilizes/materi-be-alpro/modules/user"
-    userController "github.com/Mobilizes/materi-be-alpro/modules/user/controller"
-    userRepository "github.com/Mobilizes/materi-be-alpro/modules/user/repository"
-    userService "github.com/Mobilizes/materi-be-alpro/modules/user/service"
+	"log"
 
-    "github.com/Mobilizes/materi-be-alpro/modules/auth"
-    authController "github.com/Mobilizes/materi-be-alpro/modules/auth/controller"
-    authService "github.com/Mobilizes/materi-be-alpro/modules/auth/service"
+	"github.com/Mobilizes/materi-be-alpro/config"
+	"github.com/Mobilizes/materi-be-alpro/database/entities"
+	"github.com/Mobilizes/materi-be-alpro/modules/user"
+	userController "github.com/Mobilizes/materi-be-alpro/modules/user/controller"
+	userRepository "github.com/Mobilizes/materi-be-alpro/modules/user/repository"
+	userService "github.com/Mobilizes/materi-be-alpro/modules/user/service"
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+
+	"github.com/Mobilizes/materi-be-alpro/modules/auth"
+	authController "github.com/Mobilizes/materi-be-alpro/modules/auth/controller"
+	authService "github.com/Mobilizes/materi-be-alpro/modules/auth/service"
+
+	_ "github.com/Mobilizes/materi-be-alpro/docs"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title Tugas BE Alpro
+
+// @host localhost:8080
+// @BasePath /api
 func main() {
     // Load .env
     err := godotenv.Load()
@@ -31,6 +40,9 @@ func main() {
 
     // Initialize Gin app
     r := gin.Default()
+
+    // Swagger UI
+    r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
     // Setup routes group
     api := r.Group("/api")

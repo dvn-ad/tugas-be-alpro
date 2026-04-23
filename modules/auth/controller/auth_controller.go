@@ -3,11 +3,11 @@ package controller
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/Mobilizes/materi-be-alpro/modules/auth/dto"
 	"github.com/Mobilizes/materi-be-alpro/modules/auth/service"
 	"github.com/Mobilizes/materi-be-alpro/modules/auth/validation"
 	"github.com/Mobilizes/materi-be-alpro/pkg/utils"
+	"github.com/gin-gonic/gin"
 )
 
 type AuthController struct {
@@ -18,6 +18,16 @@ func NewAuthController(authService *service.AuthService) *AuthController {
 	return &AuthController{authService: authService}
 }
 
+// @Summary User Login
+// @Description Authenticate user with email and password
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param login body dto.LoginRequest true "Login Credentials"
+// @Success 200 {object} utils.SwaggerSuccessResponse{data=dto.TokenResponse} "Login Successful"
+// @Failure 400 {object} utils.SwaggerErrorResponse "Invalid Request"
+// @Failure 401 {object} utils.SwaggerErrorResponse "Unauthorized"
+// @Router /auth/login [post]
 func (ctrl *AuthController) Login(c *gin.Context) {
 	req, err := validation.ValidateLogin(c)
 	if err != nil {
